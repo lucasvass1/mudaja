@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="O MudaJá está criando uma forma mais simples de conectar pessoas que precisam de mudanças e fretes a motoristas da Grande João Pessoa." />
+    <meta name="theme-color" content="#ff5a1f" />
+    <title>MudaJá — Sua mudança começa aqui</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="#inicio" aria-label="MudaJá — início">Muda<span>Já</span><i aria-hidden="true"></i></a>
+        <nav class="desktop-nav" aria-label="Navegação principal">
+          <a href="#como-funciona">Como vai funcionar</a>
+          <a href="#motoristas">Para motoristas</a>
+          <a href="#historia">Nossa história</a>
+          <a href="#imprensa">Imprensa</a>
+        </nav>
+        <button class="button button-small button-dark" data-open-dialog="cliente">Acompanhar lançamento</button>
+        <button class="menu-button" aria-label="Abrir menu" aria-expanded="false" data-menu-button>
+          <span></span><span></span>
+        </button>
+      </div>
+      <nav class="mobile-nav" aria-label="Navegação para celular" data-mobile-nav>
+        <a href="#como-funciona">Como vai funcionar</a>
+        <a href="#motoristas">Para motoristas</a>
+        <a href="#historia">Nossa história</a>
+        <a href="#imprensa">Imprensa</a>
+        <button class="button button-primary" data-open-dialog="cliente">Acompanhar lançamento</button>
+      </nav>
+    </header>
+
+    <main id="conteudo">
+      <section class="hero" id="inicio">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="container hero-layout">
+          <div class="hero-copy reveal">
+            <p class="eyebrow"><span></span> Em desenvolvimento na Grande João Pessoa</p>
+            <h1>Do contato do contato do contato para <em>um só lugar.</em></h1>
+            <p class="hero-lead">O MudaJá está criando uma forma mais simples de conectar pessoas que precisam de mudanças e fretes a motoristas da região.</p>
+            <div class="hero-actions">
+              <button class="button button-primary" data-open-dialog="cliente">Acompanhar o lançamento <span aria-hidden="true">↗</span></button>
+              <a class="text-link" href="#motoristas">Trabalho com fretes <span aria-hidden="true">↓</span></a>
+            </div>
+            <a class="press-shortcut" href="#imprensa">Imprensa, podcasts e eventos <span aria-hidden="true">→</span></a>
+          </div>
+
+          <div class="hero-visual reveal reveal-delay" aria-label="Simulação da interface do aplicativo MudaJá">
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="route-line"><span></span></div>
+            <div class="phone-shadow"></div>
+            <div class="phone">
+              <div class="phone-top"><span></span><small>simulação do produto</small></div>
+              <div class="phone-screen">
+                <div class="app-greeting">
+                  <p>Olá, vamos mudar?</p>
+                  <span>•••</span>
+                </div>
+                <div class="app-card app-route">
+                  <small>SUA MUDANÇA</small>
+                  <div class="place"><i></i><div><span>Saindo de</span><strong>João Pessoa</strong></div></div>
+                  <div class="route-stem"></div>
+                  <div class="place"><i></i><div><span>Indo para</span><strong>Cabedelo</strong></div></div>
+                  <button type="button">Ver minha solicitação</button>
+                </div>
+                <div class="proposal-title"><strong>Propostas chegando</strong><span>2 novas</span></div>
+                <div class="proposal-card">
+                  <div class="avatar">CM</div><div><strong>Carlos M.</strong><small>Veículo verificado</small></div><b>R$ 320</b>
+                </div>
+                <div class="proposal-card proposal-muted">
+                  <div class="avatar avatar-alt">JS</div><div><strong>João S.</strong><small>Disponível pela manhã</small></div><b>R$ 350</b>
+                </div>
+              </div>
+            </div>
+            <div class="floating-note note-one"><span>01</span> Publique uma vez</div>
+            <div class="floating-note note-two"><span>02</span> Compare propostas</div>
+          </div>
+        </div>
+        <div class="scroll-note"><span></span> Role para conhecer</div>
+      </section>
+
+      <section class="motion-strip" aria-label="Etapas propostas pelo MudaJá">
+        <div class="motion-track">
+          <span>Publicar</span><i>→</i><span>Receber propostas</span><i>→</i><span>Comparar</span><i>→</i><span>Escolher</span><i>→</i>
+          <span>Publicar</span><i>→</i><span>Receber propostas</span><i>→</i><span>Comparar</span><i>→</i><span>Escolher</span><i>→</i>
+        </div>
+      </section>
+
+      <section class="section problem" id="como-funciona">
+        <div class="container">
+          <div class="section-intro reveal">
+            <p class="kicker">O problema</p>
+            <h2>Fazer uma mudança não deveria começar com dezenas de mensagens.</h2>
+            <p>Hoje, quem precisa transportar algo costuma procurar em grupos, classificados e indicações — repetindo a mesma explicação para pessoas diferentes.</p>
+          </div>
+
+          <div class="comparison reveal">
+            <article class="comparison-card today-card">
+              <div class="card-label"><span></span> Como acontece hoje</div>
+              <ul>
+                <li><b>01</b> Procurar em vários lugares</li>
+                <li><b>02</b> Explicar a mudança várias vezes</li>
+                <li><b>03</b> Esperar respostas separadas</li>
+                <li><b>04</b> Escolher quase no escuro</li>
+              </ul>
+            </article>
+            <div class="comparison-arrow" aria-hidden="true">→</div>
+            <article class="comparison-card future-card">
+              <div class="card-label"><span></span> O que estamos construindo</div>
+              <ul>
+                <li><b>01</b> Publicar a necessidade uma vez</li>
+                <li><b>02</b> Receber propostas em um lugar</li>
+                <li><b>03</b> Conhecer melhor o profissional</li>
+                <li><b>04</b> Comparar e escolher</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section product-section">
+        <div class="container product-layout">
+          <div class="product-copy reveal">
+            <p class="kicker">O produto</p>
+            <h2>Uma plataforma para organizar essa conexão.</h2>
+            <p>O problema não é a falta de motoristas nem de pessoas precisando transportar algo. É a forma fragmentada como essas duas pontas ainda se encontram.</p>
+            <div class="status-card">
+              <div><span class="pulse"></span><strong>Produto em desenvolvimento</strong></div>
+              <p>Primeiros testes e formação da rede na Grande João Pessoa.</p>
+            </div>
+          </div>
+          <ol class="steps-list">
+            <li class="reveal"><span>01</span><div><h3>Conte o que precisa transportar</h3><p>Origem, destino, data e os detalhes necessários para o serviço.</p></div></li>
+            <li class="reveal"><span>02</span><div><h3>Receba propostas</h3><p>Profissionais interessados poderão analisar o pedido e enviar seus valores.</p></div></li>
+            <li class="reveal"><span>03</span><div><h3>Compare suas opções</h3><p>Preço, disponibilidade e informações do motorista reunidos na plataforma.</p></div></li>
+            <li class="reveal"><span>04</span><div><h3>Escolha com mais contexto</h3><p>Menos procura e mais informação antes de decidir.</p></div></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section two-sides">
+        <div class="container">
+          <div class="section-intro compact reveal">
+            <p class="kicker">Dois lados. Um encontro.</p>
+            <h2>Mais simples para quem precisa. Mais oportunidades para quem faz.</h2>
+          </div>
+          <div class="audience-grid">
+            <article class="audience-card client-card reveal">
+              <p class="audience-number">01 / CLIENTES</p>
+              <div class="audience-icon" aria-hidden="true">⌂</div>
+              <h3>Menos procura.<br />Mais poder de escolha.</h3>
+              <p>Uma única solicitação para comparar propostas e conhecer melhor quem poderá realizar o serviço.</p>
+              <ul><li>Menos conversas repetidas</li><li>Propostas reunidas</li><li>Mais contexto para decidir</li></ul>
+              <button class="button button-dark" data-open-dialog="cliente">Quero acompanhar <span>↗</span></button>
+            </article>
+            <article class="audience-card driver-card reveal reveal-delay" id="motoristas">
+              <p class="audience-number">02 / MOTORISTAS</p>
+              <div class="audience-icon truck-icon" aria-hidden="true">↗</div>
+              <h3>Mais oportunidades.<br />Uma agenda em movimento.</h3>
+              <p>Uma nova forma de encontrar demandas, organizar serviços e construir reputação além da própria rede.</p>
+              <ul><li>Acesso a novas demandas</li><li>Mais organização</li><li>Participação na construção</li></ul>
+              <button class="button button-light" data-open-dialog="motorista">Quero ser Motorista Fundador <span>↗</span></button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section founders-section">
+        <div class="founders-mark" aria-hidden="true">30</div>
+        <div class="container founders-layout">
+          <div class="founders-title reveal">
+            <p class="kicker light">Motoristas Fundadores</p>
+            <h2>Os primeiros motoristas não serão apenas cadastros.</h2>
+          </div>
+          <div class="founders-copy reveal">
+            <p>Queremos começar perto de quem vive esse mercado todos os dias. Os profissionais selecionados participarão dos primeiros testes, compartilharão experiências e ajudarão a tornar o MudaJá mais útil para quem trabalha com fretes.</p>
+            <div class="founder-points">
+              <span><b>01</b> Testar</span><span><b>02</b> Opinar</span><span><b>03</b> Construir</span>
+            </div>
+            <button class="button button-primary" data-open-dialog="motorista">Tenho interesse em participar <span>↗</span></button>
+            <small>A seleção e os benefícios do programa ainda estão sendo definidos.</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="section story" id="historia">
+        <div class="container story-layout">
+          <div class="story-heading reveal">
+            <p class="kicker">A origem</p>
+            <h2>O MudaJá nasceu de uma mudança que deu trabalho demais.</h2>
+          </div>
+          <div class="story-copy reveal">
+            <p class="story-lead">Depois de procurar em grupos, classificados e indicações, Ryan Felix terminou encontrando um motorista por meio do amigo de um tio, que conhecia alguém cujo irmão tinha um caminhão.</p>
+            <blockquote>“E se existisse um aplicativo que juntasse tudo isso?”</blockquote>
+            <p>Sem saber desenvolver aplicativos, Ryan construiu um primeiro MVP com ferramentas no-code. Depois, Lucas Vasconcelos entrou no projeto para ajudar a transformar a ideia em um produto preparado para pessoas reais.</p>
+            <p>Agora, o MudaJá está formando sua primeira rede e se preparando para começar pela Grande João Pessoa.</p>
+          </div>
+        </div>
+        <div class="story-line" aria-hidden="true"><span></span></div>
+      </section>
+
+      <section class="section early-section">
+        <div class="container early-card reveal">
+          <div>
+            <p class="kicker">Você está chegando antes</p>
+            <h2>Acompanhe uma startup sendo construída do primeiro motorista à primeira mudança.</h2>
+          </div>
+          <button class="button button-primary button-large" data-open-dialog="cliente">Quero acompanhar <span>↗</span></button>
+        </div>
+      </section>
+
+      <section class="section press-section" id="imprensa">
+        <div class="press-orbit" aria-hidden="true"></div>
+        <div class="container press-layout">
+          <div class="press-copy reveal">
+            <p class="kicker light">Imprensa & Conversas</p>
+            <h2>Existe uma história sendo construída aqui.</h2>
+            <p>O MudaJá é uma startup paraibana em desenvolvimento que quer organizar a conexão entre pessoas que precisam de mudanças e os profissionais que realizam esses serviços.</p>
+            <button class="button button-primary" data-open-dialog="imprensa">Convidar para uma conversa <span>↗</span></button>
+          </div>
+          <div class="press-topics reveal reveal-delay">
+            <p>Ryan Felix está disponível para conversas sobre:</p>
+            <ul>
+              <li><span>01</span> Construção de startups fora dos grandes centros</li>
+              <li><span>02</span> Mercados fragmentados e produtos digitais</li>
+              <li><span>03</span> No-code como ponto de partida</li>
+              <li><span>04</span> Empreendedorismo na Paraíba</li>
+              <li><span>05</span> Bastidores da construção do MudaJá</li>
+            </ul>
+            <small>Entrevistas · Podcasts · Palestras · Eventos</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq-section">
+        <div class="container faq-layout">
+          <div class="faq-heading reveal"><p class="kicker">Perguntas frequentes</p><h2>O que já dá para responder.</h2></div>
+          <div class="faq-list reveal">
+            <details><summary>O MudaJá já está funcionando?<span>+</span></summary><p>Ainda não. A plataforma está em desenvolvimento e preparando seus primeiros testes na Grande João Pessoa.</p></details>
+            <details><summary>Onde o MudaJá vai começar?<span>+</span></summary><p>A primeira região de validação inclui João Pessoa, Cabedelo, Bayeux, Santa Rita e cidades próximas que façam sentido para a operação.</p></details>
+            <details><summary>Como a plataforma vai funcionar?<span>+</span></summary><p>O cliente publicará o que precisa transportar. Motoristas interessados poderão enviar propostas, e o cliente poderá comparar as opções antes de escolher.</p></details>
+            <details><summary>Como participo como motorista?<span>+</span></summary><p>Você pode registrar seu interesse no programa de Motoristas Fundadores. A equipe entrará em contato quando começar a seleção para os primeiros testes.</p></details>
+            <details><summary>Sou da imprensa ou organizo eventos. Como falo com vocês?<span>+</span></summary><p>Use o botão “Convidar para uma conversa” para enviar seu contato e o contexto do convite diretamente à equipe.</p></details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-top">
+        <a class="brand brand-footer" href="#inicio">Muda<span>Já</span><i></i></a>
+        <p>A sua mudança na palma da mão.</p>
+        <a href="#imprensa">Imprensa & Conversas ↗</a>
+      </div>
+      <div class="container footer-bottom">
+        <span>Grande João Pessoa · Paraíba</span>
+        <span>Plataforma em desenvolvimento</span>
+        <span>© 2026 MudaJá</span>
+      </div>
+    </footer>
+
+    <dialog class="lead-dialog" data-dialog>
+      <button class="dialog-close" aria-label="Fechar" data-close-dialog>×</button>
+      <div class="dialog-content" data-dialog-content></div>
+    </dialog>
+
+    <template id="form-cliente">
+      <form class="lead-form" data-lead-form>
+        <p class="kicker">Pré-lançamento</p>
+        <h2>Acompanhe o MudaJá desde o começo.</h2>
+        <p>Deixe seu contato para receber novidades sobre os primeiros testes e o lançamento na Grande João Pessoa.</p>
+        <label>Seu nome<input required name="nome" autocomplete="name" placeholder="Como podemos te chamar?" /></label>
+        <label>WhatsApp ou e-mail<input required name="contato" placeholder="Seu melhor contato" /></label>
+        <label>Sua cidade<select required name="cidade"><option value="">Selecione</option><option>João Pessoa</option><option>Cabedelo</option><option>Bayeux</option><option>Santa Rita</option><option>Outra cidade</option></select></label>
+        <button class="button button-primary" type="submit">Quero acompanhar <span>↗</span></button>
+        <small>Seus dados são usados só para avisar sobre o lançamento do MudaJá.</small>
+      </form>
+    </template>
+
+    <template id="form-motorista">
+      <form class="lead-form" data-lead-form>
+        <p class="kicker">Motoristas Fundadores</p>
+        <h2>Ajude a construir o MudaJá.</h2>
+        <p>Conte um pouco sobre seu trabalho. A seleção dos primeiros profissionais ainda será definida.</p>
+        <label>Seu nome<input required name="nome" autocomplete="name" placeholder="Nome completo" /></label>
+        <label>Seu WhatsApp<input required name="whatsapp" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
+        <label>Qual veículo você utiliza?<select required name="veiculo"><option value="">Selecione</option><option>Caminhão</option><option>Caminhonete</option><option>Utilitário</option><option>Outro</option></select></label>
+        <label>Em qual cidade você trabalha?<input required name="cidade" placeholder="Sua cidade principal" /></label>
+        <button class="button button-primary" type="submit">Registrar interesse <span>↗</span></button>
+        <small>Seus dados são usados só para o programa de Motoristas Fundadores.</small>
+      </form>
+    </template>
+
+    <template id="form-imprensa">
+      <form class="lead-form" data-lead-form>
+        <p class="kicker">Imprensa & Conversas</p>
+        <h2>Vamos conversar?</h2>
+        <p>Conte o contexto do convite para entrevista, podcast, palestra ou evento.</p>
+        <label>Seu nome<input required name="nome" autocomplete="name" placeholder="Nome completo" /></label>
+        <label>Veículo, projeto ou evento<input required name="projeto" placeholder="Onde a conversa acontecerá?" /></label>
+        <label>Seu contato<input required name="contato" placeholder="E-mail ou WhatsApp" /></label>
+        <label>Sobre o convite<textarea required name="mensagem" rows="4" placeholder="Conte brevemente a pauta ou proposta"></textarea></label>
+        <button class="button button-primary" type="submit">Enviar convite <span>↗</span></button>
+        <small>Seus dados são usados só para retornar sobre o convite.</small>
+      </form>
+    </template>
+
+    <script src="./assets/config.js"></script>
+    <script type="module" src="./assets/script.js"></script>
+  </body>
+</html>
