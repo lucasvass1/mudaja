@@ -18,8 +18,19 @@ const mobileNav = document.querySelector('[data-mobile-nav]');
 const dialog = document.querySelector('[data-dialog]');
 const dialogContent = document.querySelector('[data-dialog-content]');
 
+let lastScrollY = window.scrollY;
+
 window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 24);
+  const scrollY = window.scrollY;
+  header.classList.toggle('scrolled', scrollY > 24);
+
+  const menuOpen = menuButton.getAttribute('aria-expanded') === 'true';
+  if (!menuOpen) {
+    const scrollingDown = scrollY > lastScrollY;
+    header.classList.toggle('header-hidden', scrollingDown && scrollY > 120);
+  }
+
+  lastScrollY = scrollY;
 }, { passive: true });
 
 menuButton.addEventListener('click', () => {
