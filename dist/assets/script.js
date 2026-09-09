@@ -1,7 +1,16 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
 const config = window.MUDAJA_CONFIG || {};
-const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
+
+// Carregado sob demanda (só quando um formulário é aberto/enviado) pra não
+// travar o menu, os modais e as animações de entrada atrás de ~15 requests
+// da CDN do Supabase logo no carregamento da página.
+let supabasePromise;
+function getSupabase() {
+  if (!supabasePromise) {
+    supabasePromise = import('https://esm.sh/@supabase/supabase-js@2')
+      .then(({ createClient }) => createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY));
+  }
+  return supabasePromise;
+}
 
 const header = document.querySelector('[data-header]');
 const menuButton = document.querySelector('[data-menu-button]');
@@ -33,15 +42,18 @@ const templates = {
 };
 
 // Normaliza os campos de cada formulário para o formato da tabela "leads"
-// (nome, contato, cidade + o resto guardado em "extra").
+// (nome, email, telefone, cidade + o resto guardado em "extra").
 function mapPayload(type, formData) {
   const data = Object.fromEntries(formData.entries());
+  const email = data.email?.trim() || null;
+  const telefone = data.telefone?.trim() || null;
 
   if (type === 'motorista') {
     return {
       tipo: 'motorista',
       nome: data.nome,
-      contato: data.whatsapp,
+      email,
+      telefone,
       cidade: data.cidade,
       extra: { veiculo: data.veiculo },
     };
@@ -51,7 +63,8 @@ function mapPayload(type, formData) {
     return {
       tipo: 'imprensa',
       nome: data.nome,
-      contato: data.contato,
+      email,
+      telefone,
       cidade: null,
       extra: { projeto: data.projeto, mensagem: data.mensagem },
     };
@@ -60,7 +73,8 @@ function mapPayload(type, formData) {
   return {
     tipo: 'cliente',
     nome: data.nome,
-    contato: data.contato,
+    email,
+    telefone,
     cidade: data.cidade,
     extra: null,
   };
@@ -95,6 +109,7 @@ function renderError(type) {
 function openLeadDialog(type) {
   const template = templates[type];
   if (!template) return;
+  getSupabase(); // começa a carregar em paralelo enquanto a pessoa preenche o formulário
   dialogContent.replaceChildren(template.content.cloneNode(true));
   dialog.showModal();
   document.body.style.overflow = 'hidden';
@@ -104,12 +119,23 @@ function openLeadDialog(type) {
   const form = dialogContent.querySelector('[data-lead-form]');
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    const emailInput = form.querySelector('[name="email"]');
+    const telefoneInput = form.querySelector('[name="telefone"]');
+    if (emailInput && telefoneInput && !emailInput.value.trim() && !telefoneInput.value.trim()) {
+      emailInput.setCustomValidity('Informe seu e-mail ou telefone.');
+      emailInput.reportValidity();
+      emailInput.addEventListener('input', () => emailInput.setCustomValidity(''), { once: true });
+      return;
+    }
+
     const submitButton = form.querySelector('button[type="submit"]');
     const originalLabel = submitButton.innerHTML;
     submitButton.disabled = true;
     submitButton.textContent = 'Enviando...';
 
     const lead = mapPayload(type, new FormData(form));
+    const supabase = await getSupabase();
     const { error } = await supabase.from('leads').insert(lead);
 
     if (error) {

@@ -52,7 +52,7 @@
             <a class="press-shortcut" href="#imprensa">Imprensa, podcasts e eventos <span aria-hidden="true">→</span></a>
           </div>
 
-          <div class="hero-visual reveal reveal-delay" aria-label="Simulação da interface do aplicativo MudaJá">
+          <div class="hero-visual reveal reveal-delay" aria-hidden="true">
             <div class="orbit orbit-one"></div>
             <div class="orbit orbit-two"></div>
             <div class="route-line"><span></span></div>
@@ -69,7 +69,7 @@
                   <div class="place"><i></i><div><span>Saindo de</span><strong>João Pessoa</strong></div></div>
                   <div class="route-stem"></div>
                   <div class="place"><i></i><div><span>Indo para</span><strong>Cabedelo</strong></div></div>
-                  <button type="button">Ver minha solicitação</button>
+                  <button type="button" tabindex="-1">Ver minha solicitação</button>
                 </div>
                 <div class="proposal-title"><strong>Propostas chegando</strong><span>2 novas</span></div>
                 <div class="proposal-card">
@@ -278,10 +278,11 @@
         <h2>Acompanhe o MudaJá desde o começo.</h2>
         <p>Deixe seu contato para receber novidades sobre os primeiros testes e o lançamento na Grande João Pessoa.</p>
         <label>Seu nome<input required name="nome" autocomplete="name" placeholder="Como podemos te chamar?" /></label>
-        <label>WhatsApp ou e-mail<input required name="contato" placeholder="Seu melhor contato" /></label>
+        <label>E-mail<input type="email" name="email" autocomplete="email" placeholder="seu@email.com" /></label>
+        <label>Telefone / WhatsApp<input type="tel" name="telefone" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
         <label>Sua cidade<select required name="cidade"><option value="">Selecione</option><option>João Pessoa</option><option>Cabedelo</option><option>Bayeux</option><option>Santa Rita</option><option>Outra cidade</option></select></label>
         <button class="button button-primary" type="submit">Quero acompanhar <span>↗</span></button>
-        <small>Seus dados são usados só para avisar sobre o lançamento do MudaJá.</small>
+        <small>Preencha ao menos um contato. Seus dados são usados só para avisar sobre o lançamento do MudaJá.</small>
       </form>
     </template>
 
@@ -291,11 +292,12 @@
         <h2>Ajude a construir o MudaJá.</h2>
         <p>Conte um pouco sobre seu trabalho. A seleção dos primeiros profissionais ainda será definida.</p>
         <label>Seu nome<input required name="nome" autocomplete="name" placeholder="Nome completo" /></label>
-        <label>Seu WhatsApp<input required name="whatsapp" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
+        <label>Seu WhatsApp<input type="tel" name="telefone" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
+        <label>E-mail<input type="email" name="email" autocomplete="email" placeholder="seu@email.com" /></label>
         <label>Qual veículo você utiliza?<select required name="veiculo"><option value="">Selecione</option><option>Caminhão</option><option>Caminhonete</option><option>Utilitário</option><option>Outro</option></select></label>
         <label>Em qual cidade você trabalha?<input required name="cidade" placeholder="Sua cidade principal" /></label>
         <button class="button button-primary" type="submit">Registrar interesse <span>↗</span></button>
-        <small>Seus dados são usados só para o programa de Motoristas Fundadores.</small>
+        <small>Preencha ao menos um contato. Seus dados são usados só para o programa de Motoristas Fundadores.</small>
       </form>
     </template>
 
@@ -306,10 +308,11 @@
         <p>Conte o contexto do convite para entrevista, podcast, palestra ou evento.</p>
         <label>Seu nome<input required name="nome" autocomplete="name" placeholder="Nome completo" /></label>
         <label>Veículo, projeto ou evento<input required name="projeto" placeholder="Onde a conversa acontecerá?" /></label>
-        <label>Seu contato<input required name="contato" placeholder="E-mail ou WhatsApp" /></label>
+        <label>E-mail<input type="email" name="email" autocomplete="email" placeholder="seu@email.com" /></label>
+        <label>Telefone / WhatsApp<input type="tel" name="telefone" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
         <label>Sobre o convite<textarea required name="mensagem" rows="4" placeholder="Conte brevemente a pauta ou proposta"></textarea></label>
         <button class="button button-primary" type="submit">Enviar convite <span>↗</span></button>
-        <small>Seus dados são usados só para retornar sobre o convite.</small>
+        <small>Preencha ao menos um contato. Seus dados são usados só para retornar sobre o convite.</small>
       </form>
     </template>
 

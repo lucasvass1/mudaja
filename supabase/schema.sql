@@ -13,6 +13,13 @@ create table if not exists public.leads (
 
 alter table public.leads enable row level security;
 
+-- Migração: separa o campo único "contato" em "email" e "telefone".
+-- Rode este bloco no SQL Editor se a tabela "leads" já existir com "contato".
+-- "contato" fica preservado (com os leads antigos) e vira opcional.
+alter table public.leads add column if not exists email text;
+alter table public.leads add column if not exists telefone text;
+alter table public.leads alter column contato drop not null;
+
 -- Qualquer visitante do site pode inserir um lead...
 create policy "leads_insert_publico"
   on public.leads

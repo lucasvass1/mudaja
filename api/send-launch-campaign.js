@@ -1,5 +1,5 @@
-// Disparo único e protegido: busca todos os leads com contato em formato de
-// e-mail no Supabase e envia a campanha "estamos no ar" via Resend.
+// Disparo único e protegido: busca todos os leads com e-mail cadastrado
+// no Supabase e envia a campanha "estamos no ar" via Resend.
 //
 // Uso (no dia do lançamento):
 //   curl -X POST https://SEU-DOMINIO/api/send-launch-campaign \
@@ -18,7 +18,6 @@ function escapeHtml(value) {
   }[char]));
 }
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PAGE_SIZE = 1000;
 const BATCH_SIZE = 100; // limite do endpoint de batch do Resend
 
@@ -28,7 +27,7 @@ async function fetchAllEmailLeads(supabaseUrl, serviceRoleKey) {
 
   while (true) {
     const response = await fetch(
-      `${supabaseUrl}/rest/v1/leads?select=nome,contato&order=created_at.asc`,
+      `${supabaseUrl}/rest/v1/leads?select=nome,email&email=not.is.null&order=created_at.asc`,
       {
         headers: {
           apikey: serviceRoleKey,
@@ -43,9 +42,7 @@ async function fetchAllEmailLeads(supabaseUrl, serviceRoleKey) {
     }
 
     const page = await response.json();
-    for (const lead of page) {
-      if (EMAIL_PATTERN.test(lead.contato)) leads.push(lead);
-    }
+    leads.push(...page);
 
     if (page.length < PAGE_SIZE) break;
     from += PAGE_SIZE;
@@ -101,7 +98,7 @@ module.exports = async (req, res) => {
     const chunk = emailLeads.slice(i, i + BATCH_SIZE);
     const payload = chunk.map((lead) => ({
       from: RESEND_FROM_EMAIL,
-      to: lead.contato,
+      to: lead.email,
       subject: 'O MudaJá está no ar! 🚀',
       html: `<p>Olá, ${escapeHtml(lead.nome.split(' ')[0])}!</p>
         <p>O MudaJá acabou de entrar no ar. Você foi uma das primeiras pessoas a se interessar — obrigado por acompanhar desde o começo.</p>`,

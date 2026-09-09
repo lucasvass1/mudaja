@@ -26,8 +26,8 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { tipo, nome, contato, cidade, extra } = req.body || {};
-  if (!tipo || !nome || !contato) {
+  const { tipo, nome, email, telefone, cidade, extra } = req.body || {};
+  if (!tipo || !nome || (!email && !telefone)) {
     res.status(400).json({ error: 'Invalid payload' });
     return;
   }
@@ -43,7 +43,8 @@ module.exports = async (req, res) => {
     <h2>Novo lead — ${escapeHtml(TIPO_LABELS[tipo] || tipo)}</h2>
     <ul>
       <li><strong>Nome:</strong> ${escapeHtml(nome)}</li>
-      <li><strong>Contato:</strong> ${escapeHtml(contato)}</li>
+      ${email ? `<li><strong>E-mail:</strong> ${escapeHtml(email)}</li>` : ''}
+      ${telefone ? `<li><strong>Telefone:</strong> ${escapeHtml(telefone)}</li>` : ''}
       ${cidade ? `<li><strong>Cidade:</strong> ${escapeHtml(cidade)}</li>` : ''}
       ${extraItems}
     </ul>
