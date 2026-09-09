@@ -59,7 +59,7 @@ a { color: inherit; }
 .text-link, .press-shortcut { font-weight: 700; text-decoration: none; border-bottom: 1px solid currentColor; }
 .text-link span, .press-shortcut span { color: var(--orange); margin-left: 8px; }
 .press-shortcut { display: inline-block; margin-top: 26px; color: #6c6964; font-size: .86rem; border-color: #c0bdb5; }
-.scroll-note { position: absolute; bottom: 42px; left: 50%; transform: translateX(-50%); color: #8b8880; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: 9px; }
+.scroll-note { position: absolute; bottom: 42px; left: 50%; transform: translateX(-50%); color: #737069; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: 9px; }
 .scroll-note span { width: 26px; height: 1px; background: var(--orange); }
 
 .hero-visual { min-height: 590px; display: grid; place-items: center; position: relative; }
@@ -186,7 +186,7 @@ a { color: inherit; }
 .press-topics li { display: grid; grid-template-columns: 50px 1fr; padding: 17px 0; border-top: 1px solid #383836; font: 600 1rem/1.4 "Manrope"; }
 .press-topics li:last-child { border-bottom: 1px solid #383836; }
 .press-topics li span { color: var(--orange); font-size: .65rem; }
-.press-topics small { color: #77746f; text-transform: uppercase; letter-spacing: .12em; }
+.press-topics small { color: #84817b; text-transform: uppercase; letter-spacing: .12em; }
 
 .faq-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 110px; }
 .faq-list details { border-top: 1px solid var(--line); }
@@ -202,7 +202,7 @@ footer { color: white; background: #0d0d0d; padding: 65px 0 28px; }
 .brand-footer { color: white; font-size: 2.25rem; justify-self: start; }
 .footer-top p { justify-self: center; color: #9f9c96; }
 .footer-top > a:last-child { justify-self: end; color: #ddd9d1; font-size: .85rem; }
-.footer-bottom { display: flex; justify-content: space-between; padding-top: 22px; border-top: 1px solid #292927; color: #6f6c67; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+.footer-bottom { display: flex; justify-content: space-between; padding-top: 22px; border-top: 1px solid #292927; color: #7f7c76; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
 
 .lead-dialog { width: min(92vw, 610px); max-height: 90vh; border: 0; border-radius: 28px; padding: 0; background: var(--paper); box-shadow: 0 40px 100px rgba(0,0,0,.35); overflow: auto; }
 .lead-dialog::backdrop { background: rgba(10,10,10,.72); backdrop-filter: blur(8px); }
