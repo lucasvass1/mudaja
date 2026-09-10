@@ -1,4 +1,8 @@
+import { trackEvent, trackConversion } from './analytics.js';
+
 const config = window.MUDAJA_CONFIG || {};
+
+const AUDIENCE_BY_TYPE = { cliente: 'client', motorista: 'driver', imprensa: 'press' };
 
 // Carregado sob demanda (só quando um formulário é aberto/enviado) pra não
 // travar o menu, os modais e as animações de entrada atrás de ~15 requests
@@ -120,6 +124,8 @@ function renderError(type) {
 function openLeadDialog(type) {
   const template = templates[type];
   if (!template) return;
+  const audience = AUDIENCE_BY_TYPE[type] || type;
+  trackEvent('signup_started', { audience });
   getSupabase(); // começa a carregar em paralelo enquanto a pessoa preenche o formulário
   dialogContent.replaceChildren(template.content.cloneNode(true));
   dialog.showModal();
@@ -152,6 +158,7 @@ function openLeadDialog(type) {
     if (error) {
       submitButton.disabled = false;
       submitButton.innerHTML = originalLabel;
+      trackEvent('signup_error', { audience });
       renderError(type);
       return;
     }
@@ -163,6 +170,7 @@ function openLeadDialog(type) {
       body: JSON.stringify(lead),
     }).catch(() => {});
 
+    trackConversion('signup_completed', { audience });
     renderSuccess();
   });
 }
@@ -173,7 +181,30 @@ function closeLeadDialog() {
 }
 
 document.querySelectorAll('[data-open-dialog]').forEach((button) => {
-  button.addEventListener('click', () => openLeadDialog(button.dataset.openDialog));
+  button.addEventListener('click', () => {
+    const type = button.dataset.openDialog;
+    trackEvent('cta_click', {
+      cta_name: button.dataset.ctaName || type,
+      audience: AUDIENCE_BY_TYPE[type] || type,
+      section: button.dataset.section || null,
+    });
+    openLeadDialog(type);
+  });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    trackEvent('menu_click', {
+      link_text: link.textContent.trim(),
+      destination: link.getAttribute('href'),
+    });
+  });
+});
+
+document.querySelectorAll('[data-social]').forEach((link) => {
+  link.addEventListener('click', () => {
+    trackEvent(`${link.dataset.social}_click`, { location: link.dataset.location || null });
+  });
 });
 
 document.querySelector('[data-close-dialog]').addEventListener('click', closeLeadDialog);
