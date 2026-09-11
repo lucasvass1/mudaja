@@ -6,6 +6,13 @@ Documentação da implementação de monitoramento (GA4) na Landing Page. Manten
 
 Site estático (HTML + CSS + JS vanilla, ES Modules), sem build step, servido pela Vercel a partir de `dist/`. Não há `.env` consumido pelo client — o Measurement ID do GA4 fica hardcoded no `<head>` de `dist/index.html`, pois não há etapa de build para injetar variáveis de ambiente no navegador.
 
+## Vercel Web Analytics
+
+- **Local do snippet:** `dist/index.html`, `<script defer src="/_vercel/insights/script.js"></script>` no `<head>`.
+- Como o site é estático sem bundler, usa-se o snippet direto em vez do pacote npm `@vercel/analytics` (que exige `import` via bundler/Next.js).
+- Não requer nenhuma variável de ambiente. É necessário **habilitar "Web Analytics" no dashboard do projeto na Vercel** (aba Analytics) para a rota `/_vercel/insights/script.js` responder e os dados começarem a ser coletados.
+- Mede visitantes e page views agregados; não substitui os eventos de conversão do GA4 documentados abaixo.
+
 ## Configuração do GA4
 
 - **Measurement ID:** `G-121JSPF54X`
