@@ -6,8 +6,26 @@
     <meta name="description" content="O MudaJá está criando uma forma mais simples de conectar pessoas que precisam de mudanças e fretes a motoristas da Grande João Pessoa." />
     <meta name="theme-color" content="#ff5a1f" />
     <title>MudaJá — Sua mudança começa aqui</title>
+    <link rel="canonical" href="https://mudaja.vercel.app/" />
     <link rel="icon" type="image/png" href="./assets/mudaja-logo-mj.png" />
     <link rel="apple-touch-icon" href="./assets/mudaja-logo-mj.png" />
+
+    <!-- Open Graph / redes sociais (WhatsApp, Instagram, LinkedIn, Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MudaJá" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content="https://mudaja.vercel.app/" />
+    <meta property="og:title" content="MudaJá — Sua mudança começa aqui" />
+    <meta property="og:description" content="O MudaJá está criando uma forma mais simples de conectar pessoas que precisam de mudanças e fretes a motoristas da Grande João Pessoa." />
+    <meta property="og:image" content="https://mudaja.vercel.app/assets/mudaja-logo-mj.png" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="1024" />
+
+    <!-- Twitter/X Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="MudaJá — Sua mudança começa aqui" />
+    <meta name="twitter:description" content="O MudaJá está criando uma forma mais simples de conectar pessoas que precisam de mudanças e fretes a motoristas da Grande João Pessoa." />
+    <meta name="twitter:image" content="https://mudaja.vercel.app/assets/mudaja-logo-mj.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -24,6 +42,19 @@
 
     <!-- Vercel Web Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
+
+    <!-- Dados estruturados (Organization) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "MudaJá",
+        "url": "https://mudaja.vercel.app/",
+        "logo": "https://mudaja.vercel.app/assets/mudaja-logo-mj.png",
+        "description": "O MudaJá está criando uma forma mais simples de conectar pessoas que precisam de mudanças e fretes a motoristas da Grande João Pessoa.",
+        "sameAs": ["https://www.instagram.com/mudaja.br"]
+      }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -280,6 +311,7 @@
       <div class="container footer-bottom">
         <span>Grande João Pessoa · Paraíba</span>
         <span>Plataforma em desenvolvimento</span>
+        <a href="./privacidade.html">Privacidade</a>
         <span>© 2026 MudaJá</span>
       </div>
     </footer>
@@ -299,7 +331,7 @@
         <label>Telefone / WhatsApp<input type="tel" name="telefone" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
         <label>Sua cidade<select required name="cidade"><option value="">Selecione</option><option>João Pessoa</option><option>Cabedelo</option><option>Bayeux</option><option>Santa Rita</option><option>Outra cidade</option></select></label>
         <button class="button button-primary" type="submit">Quero acompanhar <span>↗</span></button>
-        <small>Preencha ao menos um contato. Seus dados são usados só para avisar sobre o lançamento do MudaJá.</small>
+        <small>Preencha ao menos um contato. Seus dados são usados só para avisar sobre o lançamento do MudaJá. <a href="./privacidade.html" target="_blank" rel="noopener noreferrer">Saiba mais</a>.</small>
       </form>
     </template>
 
@@ -312,9 +344,9 @@
         <label>Seu WhatsApp<input type="tel" name="telefone" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
         <label>E-mail<input type="email" name="email" autocomplete="email" placeholder="seu@email.com" /></label>
         <label>Qual veículo você utiliza?<select required name="veiculo"><option value="">Selecione</option><option>Caminhão</option><option>Caminhonete</option><option>Utilitário</option><option>Outro</option></select></label>
-        <label>Em qual cidade você trabalha?<input required name="cidade" placeholder="Sua cidade principal" /></label>
+        <label>Em qual cidade você trabalha?<select required name="cidade"><option value="">Selecione</option><option>João Pessoa</option><option>Cabedelo</option><option>Bayeux</option><option>Santa Rita</option><option>Outra cidade</option></select></label>
         <button class="button button-primary" type="submit">Registrar interesse <span>↗</span></button>
-        <small>Preencha ao menos um contato. Seus dados são usados só para o programa de Motoristas Fundadores.</small>
+        <small>Preencha ao menos um contato. Seus dados são usados só para o programa de Motoristas Fundadores. <a href="./privacidade.html" target="_blank" rel="noopener noreferrer">Saiba mais</a>.</small>
       </form>
     </template>
 
@@ -329,7 +361,7 @@
         <label>Telefone / WhatsApp<input type="tel" name="telefone" autocomplete="tel" placeholder="(83) 99999-9999" /></label>
         <label>Sobre o convite<textarea required name="mensagem" rows="4" placeholder="Conte brevemente a pauta ou proposta"></textarea></label>
         <button class="button button-primary" type="submit">Enviar convite <span>↗</span></button>
-        <small>Preencha ao menos um contato. Seus dados são usados só para retornar sobre o convite.</small>
+        <small>Preencha ao menos um contato. Seus dados são usados só para retornar sobre o convite. <a href="./privacidade.html" target="_blank" rel="noopener noreferrer">Saiba mais</a>.</small>
       </form>
     </template>
 

@@ -1,4 +1,5 @@
-// Notifica a equipe por e-mail (Resend) a cada novo lead salvo no Supabase.
+// Notifica a equipe por e-mail (Resend) a cada novo lead salvo no Supabase,
+// e envia uma confirmação simples pra pessoa que se cadastrou (quando ela informa e-mail).
 // Chamada best-effort pelo front-end logo após o insert (dist/assets/script.js).
 
 function escapeHtml(value) {
@@ -12,6 +13,36 @@ function escapeHtml(value) {
 }
 
 const TIPO_LABELS = { cliente: 'Cliente', motorista: 'Motorista', imprensa: 'Imprensa' };
+
+const CONFIRMATION_COPY = {
+  cliente: {
+    subject: 'Recebemos seu interesse no MudaJá!',
+    body: 'Vamos avisar você por aqui assim que o MudaJá estiver disponível na Grande João Pessoa.',
+  },
+  motorista: {
+    subject: 'Recebemos seu cadastro de Motorista Fundador!',
+    body: 'Em breve entraremos em contato com mais detalhes sobre os próximos passos do programa de Motoristas Fundadores.',
+  },
+  imprensa: {
+    subject: 'Recebemos seu convite/contato!',
+    body: 'Vamos analisar sua mensagem e retornar em breve para combinarmos a conversa.',
+  },
+};
+
+async function sendEmail({ RESEND_API_KEY, from, to, subject, html }) {
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ from, to, subject, html }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Resend respondeu ${response.status}: ${await response.text()}`);
+  }
+}
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -39,7 +70,7 @@ module.exports = async (req, res) => {
         .join('')
     : '';
 
-  const html = `
+  const teamHtml = `
     <h2>Novo lead — ${escapeHtml(TIPO_LABELS[tipo] || tipo)}</h2>
     <ul>
       <li><strong>Nome:</strong> ${escapeHtml(nome)}</li>
@@ -51,29 +82,41 @@ module.exports = async (req, res) => {
   `;
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: RESEND_FROM_EMAIL,
-        to: TEAM_NOTIFY_EMAIL,
-        subject: `Novo lead MudaJá — ${TIPO_LABELS[tipo] || tipo}: ${nome}`,
-        html,
-      }),
+    await sendEmail({
+      RESEND_API_KEY,
+      from: RESEND_FROM_EMAIL,
+      to: TEAM_NOTIFY_EMAIL,
+      subject: `Novo lead MudaJá — ${TIPO_LABELS[tipo] || tipo}: ${nome}`,
+      html: teamHtml,
     });
-
-    if (!response.ok) {
-      console.error('notify-lead: erro do Resend', response.status, await response.text());
-      res.status(502).json({ error: 'Failed to send notification' });
-      return;
-    }
-
-    res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('notify-lead: erro inesperado', err);
-    res.status(500).json({ error: 'Unexpected error' });
+    console.error('notify-lead: erro ao notificar a equipe', err);
+    res.status(502).json({ error: 'Failed to send notification' });
+    return;
   }
+
+  // Confirmação pra pessoa que se cadastrou — best-effort, não falha a resposta
+  // se der errado (a equipe já foi notificada, que é o que importa de verdade).
+  if (email) {
+    const copy = CONFIRMATION_COPY[tipo] || CONFIRMATION_COPY.cliente;
+    const confirmationHtml = `
+      <p>Oi, ${escapeHtml(nome)}!</p>
+      <p>${copy.body}</p>
+      <p>Enquanto isso, acompanhe as novidades no Instagram <a href="https://www.instagram.com/mudaja.br">@mudaja.br</a>.</p>
+      <p>— Equipe MudaJá</p>
+    `;
+    try {
+      await sendEmail({
+        RESEND_API_KEY,
+        from: RESEND_FROM_EMAIL,
+        to: email,
+        subject: copy.subject,
+        html: confirmationHtml,
+      });
+    } catch (err) {
+      console.error('notify-lead: erro ao enviar confirmação para o lead', err);
+    }
+  }
+
+  res.status(200).json({ ok: true });
 };
