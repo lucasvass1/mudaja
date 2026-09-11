@@ -275,6 +275,7 @@ footer { color: white; background: #0d0d0d; padding: 65px 0 28px; }
   .hero-actions .button { width: 100%; }
   .text-link { align-self: center; }
   .hero-visual { min-height: 545px; transform: scale(.84); margin: 15px -30px 25px; }
+  .hero-visual.reveal.visible { transform: scale(.84); }
   .orbit-one { width: 510px; height: 510px; }
   .phone { width: 300px; height: 594px; }
   .note-one { left: 6px; }
@@ -302,7 +303,11 @@ footer { color: white; background: #0d0d0d; padding: 65px 0 28px; }
 
 @media (max-width: 430px) {
   .hero-visual { transform: scale(.72); margin-inline: -48px; margin-top: 0; margin-bottom: -10px; }
+  .hero-visual.reveal.visible { transform: scale(.72); }
   .founder-points { grid-template-columns: 1fr; gap: 22px; }
+  .note-one { left: 0; }
+  .note-two { right: 0; }
+  .floating-note { padding: 9px 12px; font-size: .66rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
