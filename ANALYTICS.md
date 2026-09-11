@@ -2,6 +2,45 @@
 
 Documentação da implementação de monitoramento (GA4) na Landing Page. Mantenha esta tabela atualizada sempre que um evento novo for adicionado, alterado ou removido.
 
+## Checklist de implementação
+
+_Última verificação: 11/set/2026, direto na propriedade GA4 "MudaJá"._
+
+### Feito
+
+- [x] Medir visitantes, visitas e sessões (nativo do GA4)
+- [x] Dados em tempo real (Relatórios → Tempo real, nativo — confirmado com usuário ativo real e evento `page_view` chegando)
+- [x] Histórico com filtro Hoje / 7 dias / 30 dias / período personalizado (seletor de datas nativo do GA4)
+- [x] Comparação entre períodos (toggle "Comparar" do seletor de datas, nativo)
+- [x] Dimensões personalizadas registradas: `audience`, `cta_name`, `section`, `link_text`, `destination`, `location`
+- [x] Cliques por CTA instrumentados (`cta_click` com `cta_name`, `audience`, `section`) — 8 CTAs mapeados
+- [x] Cliques no Instagram (`instagram_click`)
+- [x] Cliques de navegação/menu (`menu_click`)
+- [x] Diferenciação cliente x motorista x imprensa (parâmetro `audience` em todos os eventos relevantes)
+- [x] Início e conclusão de cadastro (`signup_started`, `signup_completed`) e erro de cadastro (`signup_error`)
+- [x] `signup_completed` marcado como conversão principal (Evento-chave no GA4)
+- [x] Funil de conversão criado — exploração **"Fase 9 - Funil de Conversão"** (Visitou → Interagiu → Clicou no CTA → Escolheu cliente/motorista → Iniciou cadastro → Concluiu cadastro), funil fechado, com detalhamento por Audiência
+- [x] Visitantes sem interação — exploração **"Fase 7 - Visitou x Interagiu"**, segmento com regex `^(cta_click|menu_click|instagram_click|signup_started)$`
+- [x] Origem do tráfego e suporte a UTMs (`utm_source/medium/campaign/term/content`) — automático via `page_view`, confirmado no relatório de Tempo real
+- [x] Análise por dispositivo (dimensão nativa "Categoria de dispositivo", disponível em qualquer relatório/exploração)
+- [x] Decisão de não construir dashboard próprio — relatórios nativos do GA4 + as duas explorações acima cobrem a necessidade atual
+- [x] Resiliência: toda a camada `analytics.js` envolvida em `try/catch`, falha do GA4 nunca quebra a LP
+- [x] Privacidade: nenhum dado pessoal (nome, e-mail, telefone) enviado ao GA4
+- [x] Documentação atualizada (este arquivo)
+- [x] **Fase 12 — Validação final em produção**, executada em 11/set/2026 em `https://mudaja.vercel.app/`:
+  - `page_view` confirmado (inclusive com `utm_source`/`utm_medium`/`utm_campaign` de teste presentes no parâmetro `dl` do hit enviado ao GA4 — a atribuição de campanha funciona mesmo sem nenhum código de UTM no projeto);
+  - CTA cliente (header) → `cta_click` + `signup_started` (`audience=client`) → formulário enviado → `signup_completed` confirmado no GA4 Realtime e contado em "Eventos principais" (conversão);
+  - CTA motorista (Motoristas Fundadores) → mesmo fluxo completo com `audience=driver`;
+  - Clique no Instagram testado (abre `instagram.com/mudaja.br` em nova aba);
+  - Confirmado no GA4 Realtime: `page_view`, `cta_click` (2), `signup_started` (2), `signup_completed` (2) chegando em tempo real, com `signup_completed` contado como evento-chave.
+  - Os 2 leads de teste gerados (nome `TESTE ANALYTICS - IGNORAR` / `teste.analytics.ga4@example.com` e `TESTE ANALYTICS - IGNORAR (MOTORISTA)` / `teste.analytics.ga4.motorista@example.com`) foram removidos da tabela `leads` do Supabase de produção em 11/set/2026 (via SQL Editor, `delete` pelos `id`s exatos, confirmados por `select` antes e depois).
+
+### Pendente
+
+- [ ] **`whatsapp_click`** — não implementado; aguardando a LP ter um link/número de WhatsApp real (hoje só há campo de formulário pedindo o telefone)
+- [ ] **Análise de campanhas reais**: a mecânica de UTM já funciona (confirmado na Fase 12), mas ainda não há volume de campanhas pagas/sociais rodando para validar comparação de qualidade de tráfego entre canais
+- [ ] Reavaliar dashboard próprio caso surja a necessidade de cruzar dados do GA4 com o status dos leads no Supabase (aprovado, contatado etc.) numa única tela
+
 ## Stack
 
 Site estático (HTML + CSS + JS vanilla, ES Modules), sem build step, servido pela Vercel a partir de `dist/`. Não há `.env` consumido pelo client — o Measurement ID do GA4 fica hardcoded no `<head>` de `dist/index.html`, pois não há etapa de build para injetar variáveis de ambiente no navegador.
@@ -90,6 +129,18 @@ O Supabase continua sendo a fonte dos dados de negócio (tabela `leads`). O GA4 
 ## Configuração da propriedade GA4 (Fases 7-12)
 
 Estas etapas são feitas **dentro da interface do Google Analytics** (analytics.google.com), não no código. Faça nesta ordem.
+
+### Status (verificado em 11/set/2026 diretamente na propriedade GA4 "MudaJá")
+
+- **Pré-requisito (dimensões personalizadas):** concluído. As 6 dimensões (`audience`, `cta_name`, `section`, `link_text`, `destination`, `location`) já estavam registradas em Admin → Definições de dados → Dimensões personalizadas.
+- **`signup_completed` como conversão:** concluído. Já está marcado como Evento-chave em Admin → Eventos, com dados reais chegando.
+- **Eventos do código em produção:** confirmado no GA4 (Admin → Eventos → Eventos recentes) — `page_view`, `cta_click`, `menu_click`, `instagram_click`, `signup_started`, `signup_completed` todos com streaming ativo. Nenhum `signup_error` registrado. `whatsapp_click` segue pendente (sem link de WhatsApp na LP ainda).
+- **Fase 7 (visitantes sem interação):** concluído. Exploração "Fase 7 - Visitou x Interagiu" já existente, com o segmento "Usuários com interação real" usando o regex `^(cta_click|menu_click|instagram_click|signup_started)$` recomendado.
+- **Fase 8 (origem/UTMs):** confirmado nativamente — o relatório de Tempo real já mostra a origem (`Origem atribuída ao primeiro usuário`) sem qualquer configuração extra.
+- **Fase 9 (funil de conversão):** concluído. Criada a exploração "Fase 9 - Funil de Conversão" com as 6 etapas (Visitou → Interagiu → Clicou no CTA → Escolheu cliente/motorista → Iniciou cadastro → Concluiu cadastro), funil fechado (ordem estrita) e detalhamento por Audiência.
+- **Fase 10 (tempo real/histórico):** confirmado nativo, sem configuração adicional necessária.
+- **Fase 11 (dashboard):** mantida a decisão de não construir um dashboard próprio — os relatórios nativos do GA4 (Aquisição, Engajamento, as duas explorações acima) são suficientes para o tamanho atual do site.
+- **Fase 12 (validação final):** pendente — depende de um teste end-to-end em produção com navegador real (abrir CTA cliente/motorista, completar cadastro de teste, conferir Realtime). Combine com a equipe antes de gerar um lead de teste real no Supabase de produção.
 
 ### Pré-requisito — Registrar as dimensões personalizadas
 
