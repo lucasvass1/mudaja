@@ -75,6 +75,7 @@ Nenhum evento envia nome, e-mail, telefone ou qualquer dado pessoal para o GA4. 
 | `signup_started` | Modal de cadastro é aberto | `audience` | Não |
 | `signup_completed` | Insert do lead no Supabase concluído com sucesso | `audience` | **Sim** |
 | `signup_error` | Insert do lead no Supabase falha | `audience` | Não |
+| `share_click` | Clique em "Compartilhar no WhatsApp" na tela de sucesso do cadastro | `audience`, `channel` (`whatsapp`), `location` (`success_modal`) | Não |
 
 `signup_completed` deve ser marcado como conversão principal dentro da interface do GA4 (Admin → Eventos → marcar como conversão).
 

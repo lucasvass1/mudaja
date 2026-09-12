@@ -95,16 +95,26 @@ function mapPayload(type, formData) {
   };
 }
 
-function renderSuccess() {
+function renderSuccess(type) {
+  const audience = AUDIENCE_BY_TYPE[type] || type;
+  const shareText = encodeURIComponent(
+    'Acabei de entrar na lista do MudaJá \u{1F69A} — uma forma mais simples de organizar mudanças e fretes em João Pessoa. Também dá pra acompanhar: https://mudaja.vercel.app'
+  );
   dialogContent.innerHTML = `
     <div class="success-state">
       <div>
         <span aria-hidden="true">✓</span>
         <h2>Interesse registrado!</h2>
         <p>Recebemos seus dados. Avisaremos por aqui assim que o MudaJá estiver no ar.</p>
-        <button class="button button-dark" type="button" data-success-close>Voltar para a página</button>
+        <div class="success-actions">
+          <a class="button button-primary" href="https://wa.me/?text=${shareText}" target="_blank" rel="noopener noreferrer" data-share-whatsapp>Compartilhar no WhatsApp <span aria-hidden="true">↗</span></a>
+          <button class="button button-dark" type="button" data-success-close>Voltar para a página</button>
+        </div>
       </div>
     </div>`;
+  dialogContent.querySelector('[data-share-whatsapp]').addEventListener('click', () => {
+    trackEvent('share_click', { audience, channel: 'whatsapp', location: 'success_modal' });
+  });
   dialogContent.querySelector('[data-success-close]').addEventListener('click', closeLeadDialog);
 }
 
@@ -136,6 +146,13 @@ function openLeadDialog(type) {
   const form = dialogContent.querySelector('[data-lead-form]');
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    const honeypot = form.querySelector('[name="website"]');
+    if (honeypot && honeypot.value.trim()) {
+      // Provável bot: finge sucesso, sem gravar lead nem enviar e-mails.
+      renderSuccess(type);
+      return;
+    }
 
     const emailInput = form.querySelector('[name="email"]');
     const telefoneInput = form.querySelector('[name="telefone"]');
@@ -171,7 +188,7 @@ function openLeadDialog(type) {
     }).catch(() => {});
 
     trackConversion('signup_completed', { audience });
-    renderSuccess();
+    renderSuccess(type);
   });
 }
 
@@ -232,3 +249,18 @@ document.querySelectorAll('.faq-list details').forEach((item) => {
     });
   });
 });
+
+// Contador social — só aparece a partir de um número que faz o produto parecer
+// tração real, não um número pequeno e desanimador.
+const LEAD_COUNTER_MIN = 15;
+const leadCounter = document.querySelector('[data-lead-counter]');
+if (leadCounter) {
+  fetch('/api/leads-count')
+    .then((response) => (response.ok ? response.json() : null))
+    .then((data) => {
+      if (!data || typeof data.count !== 'number' || data.count < LEAD_COUNTER_MIN) return;
+      leadCounter.querySelector('[data-lead-count]').textContent = data.count.toLocaleString('pt-BR');
+      leadCounter.hidden = false;
+    })
+    .catch(() => {});
+}

@@ -14,6 +14,28 @@ function escapeHtml(value) {
 
 const TIPO_LABELS = { cliente: 'Cliente', motorista: 'Motorista', imprensa: 'Imprensa' };
 
+// Limite simples por IP (best-effort: reseta a cada cold start da função,
+// não é compartilhado entre instâncias). Ainda assim barra abuso básico —
+// alguém tentando disparar dezenas de e-mails em sequência pela mesma rota.
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const rateLimitHits = new Map();
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const hit = rateLimitHits.get(ip);
+
+  if (!hit || now - hit.windowStart > RATE_LIMIT_WINDOW_MS) {
+    rateLimitHits.set(ip, { count: 1, windowStart: now });
+    return false;
+  }
+
+  hit.count += 1;
+  if (hit.count > RATE_LIMIT_MAX) return true;
+
+  return false;
+}
+
 const CONFIRMATION_COPY = {
   cliente: {
     subject: 'Recebemos seu interesse no MudaJá!',
@@ -47,6 +69,12 @@ async function sendEmail({ RESEND_API_KEY, from, to, subject, html }) {
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+  if (isRateLimited(ip)) {
+    res.status(429).json({ error: 'Too many requests' });
     return;
   }
 
