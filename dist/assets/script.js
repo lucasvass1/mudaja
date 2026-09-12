@@ -107,8 +107,8 @@ function renderSuccess(type) {
         <h2>Interesse registrado!</h2>
         <p>Recebemos seus dados. Avisaremos por aqui assim que o MudaJá estiver no ar.</p>
         <div class="success-actions">
-          <a class="button button-primary" href="https://wa.me/?text=${shareText}" target="_blank" rel="noopener noreferrer" data-share-whatsapp>Compartilhar no WhatsApp <span aria-hidden="true">↗</span></a>
           <button class="button button-dark" type="button" data-success-close>Voltar para a página</button>
+          <a class="text-link share-whatsapp" href="https://wa.me/?text=${shareText}" target="_blank" rel="noopener noreferrer" data-share-whatsapp>Compartilhar no WhatsApp <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </div>`;

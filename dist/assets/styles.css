@@ -228,12 +228,14 @@ footer { color: white; background: #0d0d0d; padding: 65px 0 28px; }
 .lead-form .button { width: 100%; margin-top: 25px; }
 .lead-form small { display: block; margin-top: 13px; text-align: center; color: #8b8881; }
 .success-state { min-height: 420px; display: grid; place-items: center; text-align: center; padding: 35px; }
-.success-state span { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; margin: auto; background: var(--lime); font-size: 2rem; }
+.success-state > div > span { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; margin: auto; background: var(--lime); font-size: 2rem; }
 .success-state h2 { font: 800 2.5rem/1.05 "Manrope"; letter-spacing: -.05em; }
 .success-state p { color: var(--muted); }
-.success-state.is-error span { background: #ffd6cb; color: var(--orange-dark); }
+.success-state.is-error > div > span { background: #ffd6cb; color: var(--orange-dark); }
 .success-state .button[disabled] { opacity: .6; pointer-events: none; }
-.success-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; width: 100%; }
+.success-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 25px; width: 100%; }
+.success-actions .share-whatsapp { color: var(--ink); font-size: .95rem; }
+.success-actions .share-whatsapp span { color: var(--orange); margin-left: 6px; }
 
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1); }
 .reveal-delay { transition-delay: .12s; }
