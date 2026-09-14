@@ -227,6 +227,8 @@ footer { color: white; background: #0d0d0d; padding: 65px 0 28px; }
 .lead-form textarea { resize: vertical; }
 .lead-form .button { width: 100%; margin-top: 25px; }
 .lead-form small { display: block; margin-top: 13px; text-align: center; color: #8b8881; }
+.lead-form-note { margin: 10px 0 0; padding: 10px 13px; border-radius: 10px; background: #fff2e9; color: var(--orange-dark); font-size: .82rem; line-height: 1.4; }
+.success-expansion-note { margin-top: 14px; padding: 10px 13px; border-radius: 10px; background: #fff2e9; color: var(--orange-dark); font-size: .88rem; line-height: 1.4; }
 .success-state { min-height: 420px; display: grid; place-items: center; text-align: center; padding: 35px; }
 .success-state > div > span { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; margin: auto; background: var(--lime); font-size: 2rem; }
 .success-state h2 { font: 800 2.5rem/1.05 "Manrope"; letter-spacing: -.05em; }

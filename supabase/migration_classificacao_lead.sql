@@ -1,38 +1,13 @@
--- Rode este script inteiro no SQL Editor do seu projeto Supabase
--- (painel do projeto > SQL Editor > New query > colar > Run)
+-- Migração: classificação de lead por região (João Pessoa / Grande João Pessoa
+-- x expansão). Rode este script inteiro no SQL Editor do seu projeto Supabase
+-- (painel do projeto > SQL Editor > New query > colar > Run).
+--
+-- Este arquivo é um recorte de supabase/schema.sql — mantenha os dois em sincronia
+-- se ajustar a lista de cidades ou a lógica de classificação no futuro.
 
-create table if not exists public.leads (
-  id uuid primary key default gen_random_uuid(),
-  tipo text not null check (tipo in ('cliente', 'motorista', 'imprensa')),
-  nome text not null,
-  contato text not null,
-  cidade text,
-  extra jsonb,
-  created_at timestamptz not null default now()
-);
-
-alter table public.leads enable row level security;
-
--- Migração: separa o campo único "contato" em "email" e "telefone".
--- Rode este bloco no SQL Editor se a tabela "leads" já existir com "contato".
--- "contato" fica preservado (com os leads antigos) e vira opcional.
-alter table public.leads add column if not exists email text;
-alter table public.leads add column if not exists telefone text;
-alter table public.leads alter column contato drop not null;
-
--- Qualquer visitante do site pode inserir um lead...
-create policy "leads_insert_publico"
-  on public.leads
-  for insert
-  to anon
-  with check (true);
-
--- ...mas ninguém consegue ler os leads pela chave pública (anon).
--- Leitura só é feita pelo backend, com a service_role key (secreta).
-
--- Classificação de lead por região: a Landing Page é uma lista de espera de
--- pré-lançamento e NÃO bloqueia ninguém pela cidade. Toda cidade informada é
--- aceita; esta coluna só marca a PRIORIDADE de contato:
+-- A Landing Page é uma lista de espera de pré-lançamento e NÃO bloqueia
+-- ninguém pela cidade. Toda cidade informada é aceita; esta coluna só marca
+-- a PRIORIDADE de contato:
 --   'prioritario' -> João Pessoa e Grande João Pessoa (área inicial de operação)
 --   'expansao'    -> qualquer outra cidade (lead para expansão futura)
 -- Calculada no servidor (trigger abaixo) para não depender do que o
@@ -74,3 +49,8 @@ drop trigger if exists trg_mudaja_classificar_lead on public.leads;
 create trigger trg_mudaja_classificar_lead
   before insert or update on public.leads
   for each row execute function public.mudaja_classificar_lead();
+
+-- O trigger só roda em INSERT/UPDATE. Este UPDATE "no-op" (cidade = cidade)
+-- força o recálculo de "classificacao" para os leads que já existiam antes
+-- desta migração. Se a tabela ainda estiver vazia, ele não faz nada.
+update public.leads set cidade = cidade;

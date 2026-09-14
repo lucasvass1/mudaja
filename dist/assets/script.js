@@ -4,6 +4,32 @@ const config = window.MUDAJA_CONFIG || {};
 
 const AUDIENCE_BY_TYPE = { cliente: 'client', motorista: 'driver', imprensa: 'press' };
 
+// Mesma lista de municípios usada no trigger do Supabase (supabase/schema.sql).
+// A classificação de verdade é calculada no banco — esta cópia só serve para
+// a mensagem de sucesso e o e-mail interno reagirem na hora, sem esperar um
+// round-trip extra até o Supabase.
+const GRANDE_JOAO_PESSOA = [
+  'joao pessoa', 'bayeux', 'cabedelo', 'santa rita', 'conde', 'lucena',
+  'alhandra', 'caapora', 'cruz do espirito santo', 'rio tinto', 'sape',
+  'pedras de fogo', 'mamanguape',
+];
+
+const DIACRITICS_PATTERN = new RegExp('[̀-ͯ]', 'g');
+
+function normalizeCidade(value) {
+  return (value || '')
+    .normalize('NFD')
+    .replace(DIACRITICS_PATTERN, '')
+    .trim()
+    .toLowerCase();
+}
+
+// Só classifica cliente/motorista: imprensa não tem cidade e não é priorizada por região.
+function classifyLead(tipo, cidade) {
+  if (tipo === 'imprensa' || !cidade) return null;
+  return GRANDE_JOAO_PESSOA.includes(normalizeCidade(cidade)) ? 'prioritario' : 'expansao';
+}
+
 // Carregado sob demanda (só quando um formulário é aberto/enviado) pra não
 // travar o menu, os modais e as animações de entrada atrás de ~15 requests
 // da CDN do Supabase logo no carregamento da página.
@@ -56,6 +82,16 @@ const templates = {
   imprensa: document.querySelector('#form-imprensa'),
 };
 
+// Quando a pessoa escolhe "Outra cidade" no select, usamos o texto digitado
+// no campo extra como cidade real — assim não gravamos o literal
+// "Outra cidade" como se fosse o nome de um município.
+function resolveCidade(data) {
+  const cidade = data.cidade?.trim();
+  if (!cidade) return null;
+  if (cidade === 'Outra cidade') return data.cidade_outra?.trim() || cidade;
+  return cidade;
+}
+
 // Normaliza os campos de cada formulário para o formato da tabela "leads"
 // (nome, email, telefone, cidade + o resto guardado em "extra").
 function mapPayload(type, formData) {
@@ -69,7 +105,7 @@ function mapPayload(type, formData) {
       nome: data.nome,
       email,
       telefone,
-      cidade: data.cidade,
+      cidade: resolveCidade(data),
       extra: { veiculo: data.veiculo },
     };
   }
@@ -90,22 +126,26 @@ function mapPayload(type, formData) {
     nome: data.nome,
     email,
     telefone,
-    cidade: data.cidade,
+    cidade: resolveCidade(data),
     extra: null,
   };
 }
 
-function renderSuccess(type) {
+function renderSuccess(type, classificacao) {
   const audience = AUDIENCE_BY_TYPE[type] || type;
   const shareText = encodeURIComponent(
     'Acabei de entrar na lista do MudaJá \u{1F69A} — uma forma mais simples de organizar mudanças e fretes em João Pessoa. Também dá pra acompanhar: https://mudaja.vercel.app'
   );
+  const expansionNote = classificacao === 'expansao'
+    ? '<p class="success-expansion-note">Sua cidade ainda não está na nossa área inicial (Grande João Pessoa), mas guardamos seu contato: você vai ser avisado assim que o MudaJá chegar por aí. \u{1F680}</p>'
+    : '';
   dialogContent.innerHTML = `
     <div class="success-state">
       <div>
         <span aria-hidden="true">✓</span>
         <h2>Interesse registrado!</h2>
         <p>Recebemos seus dados. Avisaremos por aqui assim que o MudaJá estiver no ar.</p>
+        ${expansionNote}
         <div class="success-actions">
           <button class="button button-dark" type="button" data-success-close>Voltar para a página</button>
           <a class="text-link share-whatsapp" href="https://wa.me/?text=${shareText}" target="_blank" rel="noopener noreferrer" data-share-whatsapp>Compartilhar no WhatsApp <span aria-hidden="true">↗</span></a>
@@ -143,6 +183,22 @@ function openLeadDialog(type) {
   const firstInput = dialogContent.querySelector('input');
   window.setTimeout(() => firstInput?.focus(), 50);
 
+  // "Outra cidade" abre um campo de texto pra capturar o nome real do
+  // município (em vez de gravar o literal "Outra cidade" como cidade).
+  const cidadeSelect = dialogContent.querySelector('[data-cidade-select]');
+  const cidadeOutraField = dialogContent.querySelector('[data-cidade-outra]');
+  const cidadeOutraNote = dialogContent.querySelector('[data-cidade-outra-note]');
+  if (cidadeSelect && cidadeOutraField) {
+    const cidadeOutraInput = cidadeOutraField.querySelector('input');
+    const syncCidadeOutra = () => {
+      const isOutra = cidadeSelect.value === 'Outra cidade';
+      cidadeOutraField.style.display = isOutra ? '' : 'none';
+      if (cidadeOutraNote) cidadeOutraNote.style.display = isOutra ? '' : 'none';
+      if (cidadeOutraInput) cidadeOutraInput.required = isOutra;
+    };
+    cidadeSelect.addEventListener('change', syncCidadeOutra);
+  }
+
   const form = dialogContent.querySelector('[data-lead-form]');
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -169,6 +225,10 @@ function openLeadDialog(type) {
     submitButton.textContent = 'Enviando...';
 
     const lead = mapPayload(type, new FormData(form));
+    // Estimativa local só pra UX/e-mail imediatos — o Supabase recalcula e
+    // grava o valor oficial via trigger (supabase/schema.sql), então não
+    // enviamos isso no insert.
+    const classificacao = classifyLead(lead.tipo, lead.cidade);
     const supabase = await getSupabase();
     const { error } = await supabase.from('leads').insert(lead);
 
@@ -184,11 +244,11 @@ function openLeadDialog(type) {
     fetch('/api/notify-lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(lead),
+      body: JSON.stringify({ ...lead, classificacao }),
     }).catch(() => {});
 
     trackConversion('signup_completed', { audience });
-    renderSuccess(type);
+    renderSuccess(type, classificacao);
   });
 }
 

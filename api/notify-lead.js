@@ -14,6 +14,14 @@ function escapeHtml(value) {
 
 const TIPO_LABELS = { cliente: 'Cliente', motorista: 'Motorista', imprensa: 'Imprensa' };
 
+// "classificacao" vem do front-end só como estimativa pra dar destaque
+// imediato no e-mail. O valor que fica gravado de verdade é recalculado
+// pelo trigger do Supabase (supabase/schema.sql), que não depende do cliente.
+const CLASSIFICACAO_LABELS = {
+  prioritario: '\u{1F3AF} Lead PRIORITÁRIO — Grande João Pessoa',
+  expansao: '\u{1F30E} Lead de expansão — fora da área inicial',
+};
+
 // Limite simples por IP (best-effort: reseta a cada cold start da função,
 // não é compartilhado entre instâncias). Ainda assim barra abuso básico —
 // alguém tentando disparar dezenas de e-mails em sequência pela mesma rota.
@@ -85,7 +93,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const { tipo, nome, email, telefone, cidade, extra } = req.body || {};
+  const { tipo, nome, email, telefone, cidade, extra, classificacao } = req.body || {};
   if (!tipo || !nome || (!email && !telefone)) {
     res.status(400).json({ error: 'Invalid payload' });
     return;
@@ -98,8 +106,11 @@ module.exports = async (req, res) => {
         .join('')
     : '';
 
+  const classificacaoLabel = CLASSIFICACAO_LABELS[classificacao];
+
   const teamHtml = `
     <h2>Novo lead — ${escapeHtml(TIPO_LABELS[tipo] || tipo)}</h2>
+    ${classificacaoLabel ? `<p><strong>${classificacaoLabel}</strong></p>` : ''}
     <ul>
       <li><strong>Nome:</strong> ${escapeHtml(nome)}</li>
       ${email ? `<li><strong>E-mail:</strong> ${escapeHtml(email)}</li>` : ''}
@@ -114,7 +125,7 @@ module.exports = async (req, res) => {
       RESEND_API_KEY,
       from: RESEND_FROM_EMAIL,
       to: TEAM_NOTIFY_EMAIL,
-      subject: `Novo lead MudaJá — ${TIPO_LABELS[tipo] || tipo}: ${nome}`,
+      subject: `${classificacao === 'prioritario' ? '\u{1F3AF} ' : ''}Novo lead MudaJá — ${TIPO_LABELS[tipo] || tipo}: ${nome}`,
       html: teamHtml,
     });
   } catch (err) {
