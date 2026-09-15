@@ -142,6 +142,7 @@ function renderSuccess(type, classificacao) {
   dialogContent.innerHTML = `
     <div class="success-state">
       <div>
+        <img class="success-image" src="./assets/og-share-image.jpg" alt="MudaJá - Sua mudança na palma da sua mão" loading="lazy" width="1200" height="630" />
         <span aria-hidden="true">✓</span>
         <h2>Interesse registrado!</h2>
         <p>Recebemos seus dados. Avisaremos por aqui assim que o MudaJá estiver no ar.</p>

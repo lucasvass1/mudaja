@@ -234,6 +234,7 @@ footer { color: white; background: #0d0d0d; padding: 65px 0 28px; }
 .lead-form-note { margin: 10px 0 0; padding: 10px 13px; border-radius: 10px; background: #fff2e9; color: var(--orange-dark); font-size: .82rem; line-height: 1.4; }
 .success-expansion-note { margin-top: 14px; padding: 10px 13px; border-radius: 10px; background: #fff2e9; color: var(--orange-dark); font-size: .88rem; line-height: 1.4; }
 .success-state { min-height: 420px; display: grid; place-items: center; text-align: center; padding: 35px; }
+.success-state .success-image { width: 100%; max-width: 420px; height: auto; border-radius: 16px; margin: 0 auto 20px; display: block; }
 .success-state > div > span { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; margin: auto; background: var(--lime); font-size: 2rem; }
 .success-state h2 { font: 700 2.5rem/1.05 "Roboto", sans-serif; letter-spacing: -.03em; }
 .success-state p { color: var(--muted); }
