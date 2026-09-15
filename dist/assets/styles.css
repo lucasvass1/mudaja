@@ -56,7 +56,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visibl
 .eyebrow, .kicker { margin: 0 0 22px; font-size: .77rem; line-height: 1; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .eyebrow { display: flex; align-items: center; gap: 10px; }
 .eyebrow span { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 5px rgba(255,90,31,.13); animation: beacon 2s ease-in-out infinite; }
-.hero h1 { margin: 0; max-width: 790px; font: 800 clamp(3.55rem, 6.4vw, 6.7rem)/1.08 "Inter", sans-serif; letter-spacing: -.03em; }
+.hero h1 { margin: 0; max-width: 790px; font: 800 clamp(3.55rem, 6.4vw, 5.6rem)/1.08 "Inter", sans-serif; letter-spacing: -.03em; }
 .hero h1 em { background: linear-gradient(90deg, #ff5a1f, #ffbf69); -webkit-background-clip: text; background-clip: text; color: transparent; font-style: normal; }
 .hero-lead { max-width: 590px; margin: 32px 0 0; font-size: clamp(1.08rem, 1.6vw, 1.28rem); color: #55524d; line-height: 1.55; }
 .hero-lead strong { color: #454a2f; font-weight: 700; }
