@@ -304,7 +304,7 @@ footer { color: white; background: #0d0d0d; padding: 65px 0 28px; }
   .audience-card { min-height: 610px; padding: 30px; }
   .founders-copy > p { margin-top: 0; }
   .story-copy { padding-top: 0; }
-  .story-visual { margin-top: 35px; }
+  .story-visual { width: 90%; margin: 40px auto 0; }
   .early-card { padding: 38px 28px; grid-template-columns: 1fr; gap: 35px; }
   .early-card .button { width: 100%; }
   .footer-top { grid-template-columns: 1fr; gap: 20px; }
