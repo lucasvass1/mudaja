@@ -34,7 +34,7 @@ a { color: inherit; }
 .brand span { color: var(--orange); }
 .brand .brand-name { color: var(--ink); }
 .brand i { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); right: -9px; top: -2px; }
-.brand-logo { height: 28px; width: auto; display: block; }
+.brand-logo { height: clamp(34px, 4vw, 48px); width: auto; display: block; }
 .desktop-nav { margin-left: auto; display: flex; align-items: center; gap: 30px; }
 .desktop-nav a { font-size: .9rem; font-weight: 600; text-decoration: none; color: #4c4a46; transition: color .2s ease; }
 .desktop-nav a:hover { color: var(--orange); }
