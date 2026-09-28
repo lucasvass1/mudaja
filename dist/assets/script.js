@@ -179,7 +179,7 @@ function openLeadDialog(type) {
   trackEvent('signup_started', { audience });
   getSupabase(); // começa a carregar em paralelo enquanto a pessoa preenche o formulário
   dialogContent.replaceChildren(template.content.cloneNode(true));
-  dialog.showModal();
+  if (!dialog.open) dialog.showModal();
   document.body.style.overflow = 'hidden';
   const firstInput = dialogContent.querySelector('input');
   window.setTimeout(() => firstInput?.focus(), 50);
@@ -198,6 +198,21 @@ function openLeadDialog(type) {
       if (cidadeOutraInput) cidadeOutraInput.required = isOutra;
     };
     cidadeSelect.addEventListener('change', syncCidadeOutra);
+  }
+
+  // Se a pessoa abriu o formulário errado (ex.: motorista clicou num CTA
+  // genérico de cliente), deixamos trocar sem fechar o modal e sem perder
+  // o contexto — e registramos pra sabermos o quão comum é esse engano.
+  const switchButton = dialogContent.querySelector('[data-switch-dialog]');
+  if (switchButton) {
+    switchButton.addEventListener('click', () => {
+      const nextType = switchButton.dataset.switchDialog;
+      trackEvent('dialog_switch', {
+        from_audience: audience,
+        to_audience: AUDIENCE_BY_TYPE[nextType] || nextType,
+      });
+      openLeadDialog(nextType);
+    });
   }
 
   const form = dialogContent.querySelector('[data-lead-form]');

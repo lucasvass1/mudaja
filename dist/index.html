@@ -204,7 +204,7 @@
               <h3>Menos procura.<br />Mais poder de escolha.</h3>
               <p>Uma única solicitação para comparar propostas e conhecer melhor quem poderá realizar o serviço.</p>
               <ul><li>Menos conversas repetidas</li><li>Propostas reunidas</li><li>Mais contexto para decidir</li></ul>
-              <button class="button button-dark" data-open-dialog="cliente" data-cta-name="client_card_signup" data-section="two_sides">Quero acompanhar <span>↗</span></button>
+              <button class="button button-dark" data-open-dialog="cliente" data-cta-name="client_card_signup" data-section="two_sides">Quero ser um dos primeiros clientes <span>↗</span></button>
             </article>
             <article class="audience-card driver-card reveal reveal-delay" id="motoristas">
               <p class="audience-number">02 / MOTORISTAS</p>
@@ -328,6 +328,10 @@
 
     <template id="form-cliente">
       <form class="lead-form" data-lead-form>
+        <div class="lead-form-audience">
+          <span class="audience-tag">Cadastro para clientes</span>
+          <button type="button" class="audience-switch" data-switch-dialog="motorista">É motorista? Cadastre-se aqui <span aria-hidden="true">→</span></button>
+        </div>
         <p class="kicker">Pré-lançamento</p>
         <h2>Acompanhe o MudaJá desde o começo.</h2>
         <p>Deixe seu contato para receber novidades sobre os primeiros testes e o lançamento na Grande João Pessoa.</p>
@@ -345,6 +349,10 @@
 
     <template id="form-motorista">
       <form class="lead-form" data-lead-form>
+        <div class="lead-form-audience">
+          <span class="audience-tag audience-tag-driver">Cadastro para motoristas</span>
+          <button type="button" class="audience-switch" data-switch-dialog="cliente">É cliente? Cadastre-se aqui <span aria-hidden="true">→</span></button>
+        </div>
         <p class="kicker">Motoristas Fundadores</p>
         <h2>Ajude a construir o MudaJá.</h2>
         <p>Conte um pouco sobre seu trabalho. A seleção dos primeiros profissionais ainda será definida.</p>
